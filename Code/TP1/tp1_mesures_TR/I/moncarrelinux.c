@@ -101,15 +101,17 @@ int main()
    t.tv_sec++;
    
    while(1){
-      /* wait untill next shot */
       clock_gettime(0,&t1);      
+      
+	  /* wait untill next shot */
       clock_nanosleep(0, TIMER_ABSTIME, &t, NULL);
       /* do the stuff */
       out();
       /* calculate next shot */
       t.tv_nsec+=interval;
       tsnorm(&t);
-      clock_gettime(0,&t2);
+      
+	  clock_gettime(0,&t2);
       deltat[i] = t2.tv_nsec - t1.tv_nsec + t2.tv_sec - t1.tv_sec;
       i=(i+1)%SIZETAB;
    }

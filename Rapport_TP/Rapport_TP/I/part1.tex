@@ -38,4 +38,4 @@ Nous notons ici que les petites perturbations commencent à avoir de grosse cons
 \captionof{figure}{Mesures des périodes avec la commande "cat /dev/zer > file2delete" en parallèle}
 \end{center}
 
-Nous observons que la dispersion des périodes est beaucoup plus importante. Le système d'exploitation n'a pas réussi à ordonnancer notre programme avec l'instruction que nous lui avons demandé. Pour des applications Temps réel, le système d'exploitation Linux seul ne peut pas être utilisé et c'est pour ces raisons que nous préfèrerons utiliser.
+Nous observons que la dispersion des périodes est beaucoup plus importante. Le système d'exploitation n'a pas réussi à ordonnancer notre programme avec l'instruction que nous lui avons demandé. De telles différences ne sont pas acceptables pour des applications ou des systèmes Temps Réel. Le système d'exploitation Linux seul ne peut pas être utilisé tel quel pour le Temps réel, nous devons ajouter au noyau la capacité à préempter des tâches avec l'architecture logicielle RTAI.

@@ -1,0 +1,1 @@
+cmd_/home/m2istr_13/Documents/TP_RTAI/M2ISTR_RTAI/II/squelet.ko := ld -r -m elf_i386 -T /usr/src/linux-headers-3.10.32-rtai/scripts/module-common.lds --build-id  -o /home/m2istr_13/Documents/TP_RTAI/M2ISTR_RTAI/II/squelet.ko /home/m2istr_13/Documents/TP_RTAI/M2ISTR_RTAI/II/squelet.o /home/m2istr_13/Documents/TP_RTAI/M2ISTR_RTAI/II/squelet.mod.o

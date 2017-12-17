@@ -1,15 +1,18 @@
 \chapter{TP 1 : Iniiation a un OS temps Réel basé sur Linux}
 
 \section{Mesures sous linux}
-Void out envoie un signal carré. Frequence = définie dans main
-		Amplitude de 0 1à 1
+\subsection{Programme $carrelinux-comedi.c$}
+Ce premier programme est un générateur de signal carré. Il va nous permettre d'analyser les réponses temps réel de en étant basé sur Linux. Ntre première analyse du programme donne :\begin{itemize}
+\item Fonction \emph{Void out} envoie un signal carré. La fréquence semble être défini ailleurs dans le programme. L'amplitude du signal est un niveau logique de \emph{LOW} à \emph{HIGH}.
+\item Initialisation d'une structure de temps dans le main. La librairie Comedio
+\end{itemize}
 
 dans la main est init une structure de temps, est ensuite ouvert la carte entrée sortie.la carte est paramétrée en sortie sur les ports 0 et 1. 
-ensuite, l'algorithme attend 
-initialisation d'une horloge qui va atenddre un temps correspondant a la demi-période  du signal carré généré
+ensuite, l'algorithme attend.
+initialisation d'une horloge qui va attendre un temps correspondant a la demi-période  du signal carré généré
 
 
-Pou mesurer les modifications de période, nous avons crée deux variables $timespec$ : une qui mesure le temps précédent le sleep, une qui mesure a la fin de l'instance $while(1)$. La mesure de la $\delta$ est : $\delta = t_{debut} - t_{fin}$. 
+Pour mesurer les modifications de période, nous avons crée deux variables $timespec$ : une qui mesure le temps précédent le sleep, une qui mesure a la fin de l'instance $while(1)$. La mesure de la $\delta$ est : $\delta = t_{debut} - t_{fin}$. 
 
 Mise en place d'un $gnuplot$ pour afficher les 5000 dernières périodes. 
 
@@ -21,7 +24,5 @@ Observation : \begin{itemize}
 \section{Mesures sous RTAI}
 
 Utilisation de la ligne : 
-\begin{lstlising}
-cjz
-\end{lstlisting}
+
 

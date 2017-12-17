@@ -1,5 +1,4 @@
 /* compile using  "gcc -o swave swave.c -lrt -Wall"  */
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -9,17 +8,14 @@
 #include </usr/local/src/comedilib/include/comedilib.h>
 
 #define NSEC_PER_SEC    1000000000
-
 #define DIO 2
-
 #define SIZETAB 5000
+
 comedi_t *cf;
 
 
 /* array who contain all outputs periodes */
    unsigned int deltat[SIZETAB];
-   
-
 
 /* the struct timespec consists of nanoseconds
  * and seconds. if the nanoseconds are getting
@@ -60,24 +56,21 @@ void IntHandler(int sig)
 	}
 	fclose(file);
 	exit(0);
-
 }
-
 
 /*****************************  MAIN  ********************************************/
 int main()
 {
    struct timespec t, /* for output signal */
-   		   t1, /* for get the time at the beginning of the loop */
-   	    	   t2; /* for get the time at the end of the loop */
-
-   
+   		  t1, 		  /* for get the time at the beginning of the loop */
+   	      t2;         /* for get the time at the end of the loop */
+  
    /* default interval = 50000ns = 50us
     * cycle duration = 100us
     */
    int interval=50000,
        i = 0; /* for moving into deltat */
-
+	   
    /*   attatch the Ctr+C action to print file  */
    signal(SIGINT,IntHandler);
    cf=comedi_open("/dev/comedi0");
@@ -91,11 +84,8 @@ int main()
    comedi_dio_config(cf,DIO,0,COMEDI_OUTPUT);
    comedi_dio_config(cf,DIO,1,COMEDI_OUTPUT);
 
-
-
    /* get current time */
    clock_gettime(0,&t);
-
 
    /* start after one second */
    t.tv_sec++;

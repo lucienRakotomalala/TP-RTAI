@@ -1,0 +1,6 @@
+﻿# Remplacer test par le module compile
+sudo /sbin/rmmod squelet
+ 
+
+ 
+

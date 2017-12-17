@@ -16,7 +16,7 @@ int main()
 	read(fifo1, data, SIZETAB*sizeof(int));
 	
 	FILE *f;
-	f = fopen("monFichier.txt","w");
+	f = fopen("erreur.res","w");
 	
 	for(i=0;i<SIZETAB;i++)
 	{

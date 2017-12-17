@@ -1,17 +1,17 @@
-\section{Mesures sous linux}
+\section{Mesures sous Linux}
 \subsection{Programme $carrelinux-comedi.c$}
 Ce premier programme est un générateur de signal carré. Il va nous permettre d'analyser les réponses temps réel de en étant basé sur Linux. Notre première analyse du programme donne :\begin{itemize}
 \item Fonction \emph{Void out} : envoie un signal inverse  celui qu'elle envoyait précédemment. La fréquence semble être défini ailleurs dans le programme. Le signal est envoyé vers le port 0 de la carte E/S initialisé dans la fonction \emph{main}.
 \item \emph{Carte E/S} : la librairie $Comedio$ permet d'ouvrir la connexion série avec la carte d'entrée sortie puis d'initialiser le sens du port.
 \item \emph{main} : Initialisation d'une structure de temps dans le main qui sera utilisé dans la boucle infinie du programme principal.
 \end{itemize}
-Le programme entre ensuite dans ue bucle infinie dans laquelle il attend un temps \emph{TIMER\_ABSTIME} pour ensuite appeler la fonction \emph{out}. Après, le programme calcule le \emph{next shot}, i.e le prochain déclenchement, qu'il devra attendre lors du recommencement de la boucle.
+Le programme entre ensuite dans une boucle infinie dans laquelle il attend un temps \emph{TIMER\_ABSTIME} pour ensuite appeler la fonction \emph{out}. Après, le programme calcule le \emph{next shot}, i.e le prochain déclenchement, qu'il devra attendre lors du recommencement de la boucle.
 
 Avec ce recueil d'informations, nous sommes capable de définir la fréquence du signal du signal carré que nous allons observer : elle est égale à 2 fois le \emph{next shot} calculé dans la boucle infinie : ce calcul est : $next\_shot = 50 000 + t$, la variable $t$ appartient à la structure de temps et elle est défini en nanosecondes donc : \begin{equation}
 f = 2\times 50 000ns \Leftrightarrow f= 100\mu s
 \end{equation} 
 
-\subparagraph{Mesures des période du signal}
+\subsection{Mesures des période du signal}
 Pour mesurer les modifications de période, nous avons crée deux variables de type $timespec$ : une qui mesure le temps précédent le sleep, une qui mesure a la fin de l'instance $while(1)$. La mesure de la demi-période du signal carré $\delta$ est alors la différence entre le temps du début de la boucle et le temps en fin de boucle.  
 
 Pour permettre un affichage correct, nous avons introduit dans notre programme une fonction qui permet d'écrire dans un fichier les 5000 dernières $\delta$ mesurées et qui sera appelé dès que le signal \textbf{Ctrl+C} grâce à l'instruction : 

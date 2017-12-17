@@ -1,5 +1,26 @@
 \section{Mesures sous RTAI}
 \subsection{L'environnement RTAI Kernel}
+\begin{center}
+Voir en annexe les fichiers des différents fichiers
+\end{center}
 Dans cette partie, nous avons refait la fonctionnalité précédente, c'est-à-dire un générateur de signal carré à fréquence fixe  de 100 microsecondes, sous la forme d'un processus temps réel. 
 
-Dans un premier temps, nous avons modifier les fichiers go, stop et Makefile afin qu'ils correspondent au nom du fichier a compiler. Dans 
+Dans un premier temps, nous avons modifié les fichiers \emph{go}, \emph{stop} et \emph{Makefile} afin qu'ils correspondent avec le nom du fichier a compiler. En plus de cela, dans le \emph{Makefile}, nous avons ajouté une règle \emph{clean} afin de détruire les fichiers objets de la précédente compilation afin d'être sur que les compilations soient bien effectuées (le décalage temporel des ordinateurs causant parfois problèmes en salle de TP). Nous avons aussi, dans la règle \emph{default}, ajouté une commande afin de rendre exécutable l'exécutable généré.
+
+Dans un second temps, nous avons complété le processus RTAI (fichier \emph{squelet.c}).\\
+
+
+Nous avons complété la  fonction \emph{init\_module} afin qu'elle crée et initialise la fonction \emph{Tache1}. Cette configuration fait d'elle une tâche périodique, de fréquence $50 \mu s$. De cette façon, la \emph{Tache1} est appelée toute les demi-périodes du signal à générer. Nous avons aussi créé un compteur \emph{now} qui permet relever le temps présent et de lancer la tâche \emph{Tache1} en même temps que celle-ci est rendue périodique. Il y est également effectué l'ouverture de la carte d'entrée/sortie et l'initialisation d'un timer nécessaire à la mesure du temps dans la tâche \emph{Tache1}. \\
+
+
+La tâche \emph{Tache1}, sert a générer le signal carré et a générer la mesure et l'écriture dans une FIFO de chaque période. Elle est organisée en deux parties : \\
+
+Une initialisation où sont créé 3 entiers : \emph{voie}, \emph{composant} et \emph{delta\_i} servants respectivement a désigner le numéro de la voie du FIFO où nous écrivons, a désigner le numéro de son composant et a stocker la valeur de la période du signal généré.
+Dans une seconde partie, contenue dans une boucle infinie afin que celle-ci se répète indéfiniment. Au début de cette partie, nous relevons le temps présent grâce au timer global décrit précédemment. Il est  stocké dans \emph{delta\_i}. Ensuite, nous générons la valeur haute de sortie sur le port 0. Nous attendons la fin de la période de la tâche (la moitié de celle du signal) et ensuite nous faisons de même pour la valeur basse du signal et nous récupérons le temps courant et calculons la période du signal. La dernière étape est d'écrire dans une fifo la valeur.\\
+Une troisième tâche est décrite dans ce fichier, \emph{cleanup\_module} qui est lancée en fin d'exécution permet d'arrêter les timers et de détruire les tâches. \\
+\\
+
+Dans \emph{writeToFile.c}, qui est lancée dans \emph{stop}, nous lisons les 5000 valeurs de la FIFO précédente et les stockons dans un fichier \emph{"erreur.res"}.\\
+\\
+
+Nous n'avons pas réussi a lire les données dans la FIFO mais les résultats attendus sont que l'application lancée sur le noyau RTAI présente une meilleure robustesse aux actions exécutées depuis le système d'exploitation et, donc, que la période du signal généré présente une plus faible variation autour de 100 microsecondes.

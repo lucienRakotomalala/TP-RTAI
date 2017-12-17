@@ -40,7 +40,6 @@ void Tache1 (long int x)
 {
 	int voie 		= x,
 	    composant 	= DIO,
-	    i			=0,		/*position dans deltat*/
 		delta_i 	= 0;
 	while (1)
 	{  
@@ -52,14 +51,9 @@ void Tache1 (long int x)
 		rt_task_wait_period();
 		curTime = rt_get_time(); // read final times
 		delta_i = (int)curTime - delta_i; // calc period
-
-		i=(i+1)%SIZETAB; // increment counter modulo SIZETAB for count the number of values
-		if( i > SIZETAB)
-		{	
-			if(rtf_put(deltat,&delta_i,SIZETAB)<0)
-			{
-				printk("probleme ecrite fifo : /dev/rtf0\n");
-			}
+		if(rtf_put(deltat,&delta_i,SIZETAB)<0)
+		{
+			printk("probleme ecrite fifo : /dev/rtf0\n");
 		}
 	}
 }
@@ -84,7 +78,7 @@ int init_module(void)
 	rt_set_oneshot_mode();
 	// Lancement du timer
 
-	now =  start_rt_timer(0); // creation timer de periode  50ms
+	now =  start_rt_timer(0); // creation timer 
 	curTime = start_rt_timer( nano2count(0));
  	now = rt_get_time();
   	// Lancement des taches

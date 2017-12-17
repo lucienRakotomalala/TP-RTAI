@@ -57,8 +57,8 @@
 
 \hypersetup{							% Information sur le document
 pdfauthor = { NOM },				% Auteurs
-pdftitle = {Matière - Titre - Sujet },		% Titre du document
-pdfsubject = {matière},		% Sujet
+pdftitle = {Systèmes Temps Réel},		% Titre du document
+pdfsubject = {Compte Rendu de TP},		% Sujet
 pdfkeywords = {},				% Mots-clefs
 pdfstartview={FitH}}					% ajuste la page à la largueur de l'écran
 %pdfcreator = {MikTeX},% Logiciel qui a crée le document
@@ -70,6 +70,7 @@ pdfstartview={FitH}}					% ajuste la page à la largueur de l'écran
 
 %======================= Lstlisting parametres ==================
 % Langage C
+
 \lstdefinestyle{customc}{
   breaklines=true,
   frame=L,
@@ -80,6 +81,17 @@ pdfstartview={FitH}}					% ajuste la page à la largueur de l'écran
   stringstyle=\color{orange},
   tabsize  = 2,
   showstringspaces=false,
+}
+\lstdefinestyle{customMakefile}{
+ language=[gnu] make,
+   keywordstyle=\color{teal}\textbf,
+   stringstyle=\color{blue},
+   identifierstyle=\itshape
+   }
+
+\lstdefinestyle{custombash}{
+  language=bash,
+  basicstyle=\ttfamily
 }
 
 %======================== DEBUT DU DOCUMENT ========================

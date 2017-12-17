@@ -1,0 +1,19 @@
+TARGET = Exemple-LXRT-2
+SRCS = Exemple-LXRT-2.c
+prefix := $(shell rtai-config --prefix)
+ifeq ($(prefix),)
+$(error Please add <rtai-install>/bin to your PATH variable)
+endif
+OBJECTS = $(SRCS:.c=.o)
+CC = $(shell rtai-config --cc)
+LXRT_CFLAGS = $(shell rtai-config --lxrt-cflags)
+LXRT_LDFLAGS = $(shell rtai-config --lxrt-ldflags)
+all: $(TARGET)
+%.o: %.c
+	$(CC) -c  $(LXRT_CFLAGS) $<
+$(TARGET) :  $(OBJECTS)
+	$(CC) -o $(TARGET) $(LXRT_LDFLAGS) -llxrt -lcomedi -lm $(OBJECTS)
+
+Clean:
+	rm -f  *.o  *~  $(TARGET) 
+ .PHONY: clean 

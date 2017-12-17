@@ -2,18 +2,13 @@
 \BOOKMARK [0][-]{chapter.1}{TP 1 : Initiation a un OS temps R\351el bas\351 sur Linux}{}% 2
 \BOOKMARK [1][-]{section.1.1}{Mesures sous Linux}{chapter.1}% 3
 \BOOKMARK [2][-]{subsection.1.1.1}{Programme carrelinux-comedi.c}{section.1.1}% 4
-\BOOKMARK [1][-]{section.1.2}{Mesures sous RTAI}{chapter.1}% 5
-\BOOKMARK [2][-]{subsection.1.2.1}{L'environnement RTAI Kernel}{section.1.2}% 6
-\BOOKMARK [0][-]{chapter.2}{}{}% 7
-\BOOKMARK [0][-]{chapter.3}{}{}% 8
-\BOOKMARK [0][-]{chapter.4}{Conclusion}{}% 9
-\BOOKMARK [-1][-]{part*.3}{Annexes}{}% 10
-\BOOKMARK [0][-]{chapter*.4}{TP1}{part*.3}% 11
-\BOOKMARK [1][-]{section*.5}{Code partie 1}{chapter*.4}% 12
-\BOOKMARK [1][-]{section*.6}{Code partie 2}{chapter*.4}% 13
-\BOOKMARK [2][-]{section*.7}{Script du bash go}{section*.6}% 14
-\BOOKMARK [2][-]{section*.8}{Script du bash stop}{section*.6}% 15
-\BOOKMARK [2][-]{section*.9}{Script du Makefile}{section*.6}% 16
-\BOOKMARK [2][-]{section*.10}{Source de l'application RTAI}{section*.6}% 17
-\BOOKMARK [2][-]{section*.11}{Source du processus de r\351cup\351ration de donn\351es}{section*.6}% 18
-\BOOKMARK [0][-]{chapter*.12}{Annexe 2 - TITRE}{part*.3}% 19
+\BOOKMARK [2][-]{subsection.1.1.2}{Mesures des p\351riode du signal}{section.1.1}% 5
+\BOOKMARK [1][-]{section.1.2}{Mesures sous RTAI}{chapter.1}% 6
+\BOOKMARK [2][-]{subsection.1.2.1}{L'environnement RTAI Kernel}{section.1.2}% 7
+\BOOKMARK [0][-]{chapter.2}{}{}% 8
+\BOOKMARK [0][-]{chapter.3}{}{}% 9
+\BOOKMARK [0][-]{chapter.4}{Conclusion}{}% 10
+\BOOKMARK [-1][-]{part*.3}{Annexes}{}% 11
+\BOOKMARK [0][-]{chapter*.4}{TP1}{part*.3}% 12
+\BOOKMARK [1][-]{section*.5}{Code partie 1}{chapter*.4}% 13
+\BOOKMARK [0][-]{chapter*.6}{Annexe 2 - TITRE}{part*.3}% 14

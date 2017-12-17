@@ -1,0 +1,13 @@
+all :  carrelinux-comedi
+
+
+carrelinux-comedi : carrelinux-comedi.c
+	gcc -o carrelinux-comedi carrelinux-comedi.c -lrt -Wall -lm -lcomedi  
+
+clean :
+	rm -f  carrelinux-comedi  delta.png delta.res core
+
+gnuplot-view : delta.res
+	gnuplot delta.plt; gpicview delta.png
+
+	

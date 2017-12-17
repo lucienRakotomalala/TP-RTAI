@@ -1,0 +1,75 @@
+/* compile using  "gcc -o swave swave.c -lrt -Wall"  */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+#include <sched.h>
+#include <signal.h>
+#include <sys/io.h>
+#include </usr/local/src/comedilib/include/comedilib.h>
+
+#define NSEC_PER_SEC    1000000000
+
+#define DIO 2
+comedi_t *cf;
+
+/* the struct timespec consists of nanoseconds
+ * and seconds. if the nanoseconds are getting
+ * bigger than 1000000000 (= 1 second) the
+ * variable containing seconds has to be
+ * incremented and the nanoseconds decremented
+ * by 1000000000.
+ */
+static inline void tsnorm(struct timespec *ts)
+{
+   while (ts->tv_nsec >= NSEC_PER_SEC) {
+      ts->tv_nsec -= NSEC_PER_SEC;
+      ts->tv_sec++;
+   }
+}
+
+/* increment counter and write to parallelport */
+void out()
+{
+   static unsigned char state=0;
+   comedi_dio_write(cf,DIO,0,state);
+	state=!state;
+}
+
+int main()
+{
+   struct timespec t;
+   
+   /* default interval = 50000ns = 50us
+    * cycle duration = 100us
+    */
+   int interval=50000;
+
+   cf=comedi_open("/dev/comedi0");
+   if(cf==NULL)
+   {
+      comedi_perror("Comedi fails to open");
+      return -1;
+   }
+
+   // Configure le device ANALOG_OUTPUT pour envoyer les donnees signaux
+   comedi_dio_config(cf,DIO,0,COMEDI_OUTPUT);
+   comedi_dio_config(cf,DIO,1,COMEDI_OUTPUT);
+
+
+
+   /* get current time */
+   clock_gettime(0,&t);
+   /* start after one second */
+   t.tv_sec++;
+   while(1){
+      /* wait untill next shot */
+      clock_nanosleep(0, TIMER_ABSTIME, &t, NULL);
+      /* do the stuff */
+      out();
+      /* calculate next shot */
+      t.tv_nsec+=interval;
+      tsnorm(&t);
+   }
+   return 0;
+}

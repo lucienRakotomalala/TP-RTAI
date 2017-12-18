@@ -9,4 +9,11 @@ Les calculs dans un programme temps réel ne sont généralement pas souhaitable
 
 SA SERAIT COOL D'ajouter un graphique
 \subsection{Conversion des valeurs analogique vers numérique}
-Pour pouvoir sortir un signal analogique, le programme RTAI utilise un convertisseur numérique-analogique 16 bits avec la librairie \emph{comedio}. 
+Pour pouvoir sortir un signal analogique, le programme RTAI utilise un convertisseur numérique-analogique 16 bits avec la librairie \emph{comedio}. Il nous faut adapter les valeurs en V que nous souhaitons envoyer à ces valeurs numériques. Nous allons utiliser la loi suivante qui a été calculé en sachant que le signal peut avoir une amplitude max de [-10V; 10V]. Avec ces informations, nous trouvons : \begin{align*}
+S_{data} = \frac{65535}{20}\times V + 32767
+\end{align*}
+
+\subsection{Envoie des signaux sur le CNA}
+L'implémentation de la tâche de haute priorité nécessite de commencer par l'initialisation RTAI de celle-ci. Nous décidons de mettre une fréquence fixe pour commencer de 1ms 
+
+\subsection{Observation des résultats}

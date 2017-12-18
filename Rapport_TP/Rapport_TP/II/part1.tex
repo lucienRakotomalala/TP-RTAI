@@ -5,6 +5,7 @@ Nous avons décider de séparer notre logiciel en 2 tâches temps réel : \begin
 \end{itemize}
 Au vue de ces deux tâches, il est impératif de décider maintenant de la différence de priorité entre ces deux taches principale. Il nous semble approprier, à ce stade de l'implémentation, de donner plus de priorité à la fonction \emph{void generateur} pour permettre un rafraichissement de la valeur envoyé sur le convertisseur numérique analogique suffisante. La fonction \emph{void lecture} sera alors appelée moins régulièrement que la génération des signaux.
 \subsection{Génération du signal périodique}
+\label{subsection:signalperiodique}
 Les calculs dans un programme temps réel ne sont généralement pas souhaitables : il demande trop de temps, selon leur complexité, au processeur. Selon cette affirmation, pour générer les signaux sinusoïdaux, nous ne devons faire aucun calcul de $\sin$ dans le programme principal. Nous devons générer d'une autre manière un série de 50 valeurs comprises entre [A VERIFIER] qui représente notre signal sinusoïdal qui n'a pas subit de modifications.
 
 SA SERAIT COOL D'ajouter un graphique
@@ -14,6 +15,14 @@ S_{data} = \frac{65535}{20}\times V + 32767
 \end{align*}
 
 \subsection{Envoie des signaux sur le CNA}
-L'implémentation de la tâche de haute priorité nécessite de commencer par l'initialisation RTAI de celle-ci. Nous décidons de mettre une fréquence fixe pour commencer de 1ms 
+L'implémentation de la tâche de haute priorité nécessite de commencer par l'initialisation RTAI de celle-ci. Nous décidons de mettre une fréquence fixe pour commencer de 1ms  
+\begin{lstlisting}
+Code Initialisation
+\end{lstlisting}
+La tâche de génération de signaux consiste à exécuter dans une boucle infinie la lecture de la case du tableau des valeurs possibles du sinus, convertir cette valeur pour le CNA de 16bits et l'envoyer avec \emph{comedi\_data\_write}. Cette boucle attend ensuite sa prochaine ré-activation pour recommencer ces opérations en décalant sa lecture des données générés dans \ref{subsection:signalperiodique}.
+\begin{lstlisting}
+Tache generateur
+\end{lstlisting}
 
 \subsection{Observation des résultats}
+Nous observons deux signaux échantillonnés sur l'écran de notre oscilloscope qui sont similaires. Il semble que l'implémentation du reste de l'application soit possible. 

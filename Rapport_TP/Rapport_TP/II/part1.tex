@@ -1,6 +1,12 @@
 \section{Position du problème}
-Nous avons décider de sépararer notre logiciel en 2 âches temps réel : \begin{itemize}
+Nous avons décider de séparer notre logiciel en 2 tâches temps réel : \begin{itemize}
 \item \emph{void generateur} : fonction de haute priorité qui s'occupe de générer les 2 signaux sinusoïdaux. 
 \item \emph{void lecture} : fonction qui va lire les valeurs en entrées (potentiomètre et numérique) pour recalculer les signaux.
 \end{itemize}
-Au vue de ces deux tâches, il est impératif de décider maintenant de la différence 
+Au vue de ces deux tâches, il est impératif de décider maintenant de la différence de priorité entre ces deux taches principale. Il nous semble approprier, à ce stade de l'implémentation, de donner plus de priorité à la fonction \emph{void generateur} pour permettre un rafraichissement de la valeur envoyé sur le convertisseur numérique analogique suffisante. La fonction \emph{void lecture} sera alors appelée moins régulièrement que la génération des signaux.
+\subsection{Génération du signal périodique}
+Les calculs dans un programme temps réel ne sont généralement pas souhaitables : il demande trop de temps, selon leur complexité, au processeur. Selon cette affirmation, pour générer les signaux sinusoïdaux, nous ne devons faire aucun calcul de $\sin$ dans le programme principal. Nous devons générer d'une autre manière un série de 50 valeurs comprises entre [A VERIFIER] qui représente notre signal sinusoïdal qui n'a pas subit de modifications.
+
+SA SERAIT COOL D'ajouter un graphique
+\subsection{Conversion des valeurs analogique vers numérique}
+Pour pouvoir sortir un signal analogique, le programme RTAI utilise un convertisseur numérique-analogique 16 bits avec la librairie \emph{comedio}. 

@@ -1,11 +1,11 @@
 \section{Implémentation de la modification des signaux}
 
-\subsection{Division de la tâches \emph{void generateur}}	
+\subsection{Division de la tâches $void\ generateur$}	
 Il est nécessaire de modifier le code précédent pour respecter les contraintes générales. Celles-ci nous demandent de donner la possibilité de modifier la fréquence des signaux qui dépend elle-même de la fréquence de l'unique tâche \emph{generateur}. Pour modifier la fréquence d'un seul signal de manière indépendante, il est donc nécessaire de séparer a tâche \emph{generateur} en deux taches temps réel \emph{genrateur1} et \emph{genrateur2}. 
 
-Problèmes de INIT que j'ai pas compris
-\subsection{Tâche de lecture des informations}
-Maintenant que les signaux sont indépendants, nous pouvons commencer l'implémentation de la tâche mons récurrente : \emph{void lecture}. Cette fonction va utiliser plusieurs types de signaux : 
+Pour l'initialisation de ces tâches, nous avons séparé la fonction d'initialisation présenté dans la partie précédente. Nous avons cependant remarqué un problème de superposition des tâches, car les tâches doivent avoir un décalage dans leurs lancement sinon la génération des 2 signaux ne se superpose pas correctement. 
+\subsection{Tache de lecture des informations}
+Maintenant que les signaux sont indépendants, nous pouvons commencer l'implémentation de la tâche moins récurrente : \emph{void lecture}. Cette fonction va utiliser plusieurs types de signaux : 
 \begin{itemize}
 \item[\textbf{a} :]valeur analogique pour modifier l'amplitude.
 \item[\textbf{p} :]valeur analogique pour modifier la phase.
@@ -13,7 +13,7 @@ Maintenant que les signaux sont indépendants, nous pouvons commencer l'impléme
 \item[\textbf{n} :]valeur binaire pour sélectionner le signal à modifier.
 \item[\textbf{a} :]valeur binaire pour sélectionner la sensibilité.
 \end{itemize}
-
+Ces valeurs doivent être récupéré sur la carte E/S connecté avec la librairie \emph{comedio}. Les variables binaire seront récupérées avec \emph{comedi\_dio\_read} et les variables analogiques seront lus par \emph{comedi\_data\_read}. Nous devons ensuite appliquer sur les variables analogiques une loi de conversion pour ne retenir que la valeur que nous souhaitons. Ces modifications 
 \subsection{Application de ces informations aux signaux}
 
 

@@ -3,16 +3,56 @@
 \subsection*{Script du bash \textbf{go}}
 \addcontentsline{toc}{subsection}{Script du bash \textbf{go}}
 
-\lstinputlisting[style=custombash,caption={go}]{./annexes/annexe1/go.txt}
+%\lstinputlisting[style=custombash,caption={go}]{./annexes/annexe1/go.c}
+\begin{lstlisting}[style = customMakefile]
+sudo /sbin/insmod /usr/realtime/modules/rtai_hal.ko
+sudo /sbin/insmod /usr/realtime/modules/rtai_lxrt.ko
+sudo /sbin/insmod /usr/realtime/modules/rtai_fifos.ko
+
+sudo modprobe comedi
+sudo modprobe kcomedilib
+
+
+sudo /sbin/insmod /usr/realtime/modules/rtai_comedi.ko
+sudo modprobe ni_pcimio
+
+
+# Remplacer test.ko par le module compile
+sudo /sbin/insmod ./squelet.ko
+\end{lstlisting}
+
+\subsection*{Script du bash \textbf{go}}
+\addcontentsline{toc}{subsection}{Script du bash \textbf{go}}
+
+%\lstinputlisting[style=custombash,caption={stop}]{./annexes/annexe1/stop.txt}
+\begin{lstlisting}[style = customMakefile]
+# Remplacer test par le module compile
+sudo /sbin/rmmod squelet
+\end{lstlisting}
 \subsection*{Script du bash \textbf{stop}}
 \addcontentsline{toc}{subsection}{Script du bash \textbf{stop}}
-
-\lstinputlisting[style=custombash,caption={stop}]{./annexes/annexe1/stop.txt}
-
+\begin{lstlisting}[style = customMakefile]
+# Remplacer test par le module compile
+sudo /sbin/rmmod squelet
+\end{lstlisting}
 \subsection*{Script du \textbf{Makefile}}
 \addcontentsline{toc}{subsection}{Script du \textbf{Makefile}}
+\begin{lstlisting}[style = customMakefile]
+# Remplacer foo par le fichier objet (.o) compile
+obj-m	:= tp2_gen_sign.o
 
-\lstinputlisting[style=customMakefile,caption={Makefile}]{./annexes/annexe1/Makefile.txt}
+KDIR	:= /lib/modules/$(shell uname -r)/build
+PWD		:= $(shell pwd)
+EXTRA_CFLAGS := -I/usr/realtime/include -I/usr/include/ -I/usr/local/include  -D__IN_RTAI__ -ffast-math -mhard-float
+
+
+default: clean
+	$(MAKE) -lcomedi -lm -C $(KDIR) SUBDIRS=$(PWD) modules
+	chmod +x $(obj-m)
+	
+clean :
+	rm -f  $(obj-m)
+\end{lstlisting}
 \newpage
 \subsection*{Source de l'application RTAI}
 \addcontentsline{toc}{subsection}{Source de l'application RTAI}
@@ -22,4 +62,4 @@
 \subsection*{Source du processus de récupération de données}
 \addcontentsline{toc}{subsection}{Source du processus de récupération de données}
 
-\lstinputlisting[style=customc,caption={writeToFile.c}]{./annexes/annexe1/squelet.c}
+\lstinputlisting[style=customc,caption={writeToFile.c}]{./annexes/annexe1/writeToFile.c}

@@ -1,0 +1,41 @@
+\section{Implémentation de la modification des signaux}
+
+\subsection{Division de la tâches $void\ generateur$}	
+Il est nécessaire de modifier le code précédent pour respecter les contraintes générales. Celles-ci nous demandent de donner la possibilité de modifier la fréquence des signaux qui dépend elle-même de la fréquence de l'unique tâche \emph{generateur}. Pour modifier la fréquence d'un seul signal de manière indépendante, il est donc nécessaire de séparer a tâche \emph{generateur} en deux taches temps réel \emph{genrateur1} et \emph{genrateur2}. 
+
+Pour l'initialisation de ces tâches, nous avons séparé la fonction d'initialisation présenté dans la partie précédente. Nous avons cependant remarqué un problème de superposition des tâches, car les tâches doivent avoir un décalage dans leurs lancement sinon la génération des 2 signaux ne se superpose pas correctement. 
+\subsection{Tache de lecture des informations}
+Maintenant que les signaux sont indépendants, nous pouvons commencer l'implémentation de la tâche moins récurrente : \emph{void lecture}. Cette fonction va utiliser plusieurs types de signaux : 
+\begin{itemize}
+\item[\textbf{a} :]valeur binaire pour modifier l'amplitude.
+\item[\textbf{p} :]valeur binaire pour modifier la phase.
+\item[\textbf{f} :]valeur binaire pour modifier la fréquence.
+\item[\textbf{n} :]valeur binaire pour sélectionner le signal à modifier.
+\item[\textbf{a} :]valeur binaire pour sélectionner la sensibilité.
+\item[\textbf{potar} :]valeur analogique du potentiomètre
+\end{itemize}
+Ces valeurs doivent être récupéré sur la carte E/S connecté avec la librairie \emph{comedio}. Les variables binaire seront récupérées avec \emph{comedi\_dio\_read} et les variables analogiques seront lus par \emph{comedi\_data\_read}. Nous devons ensuite appliquer sur les variables analogiques une loi de conversion pour ne retenir que la valeur que nous souhaitons. Ces modifications se calculent en fonction du Convertisseur Analogique Numérique 16 bits utilisé pour convertir la tension du potentiomètre,pour une valeur 0 lu sur le CAN, nous devons obtenir 0V et pour une valeur de $2^{16}-1= 65535$ nous devons obtenir 10V. La loi de conversion s'écrit donc : \begin{equation}
+V = \frac{10}{65535}\times CAN
+\end{equation} 
+\subsection{Application de ces informations aux signaux}
+Une fois les valeurs du CAN et des interrupteurs lus, nous allons l'appliquer sur les signaux en sachant que :
+\begin{equation}
+S = A\sin(2\pi f + \phi)
+\end{equation}
+où on l'on retrouve $A$ l'amplitude du signal que nous règlerons avec \textbf{a}, la phase $\phi$ qui sera réglé avec \textbf{p} et la fréquence $f$ qui sera modifié avec \textbf{f}. Cependant, nous n'avons pas accès au calcul du $\sin$, nous allons donc devoir procéder d'une autre manière.
+
+Le premier paramètres que nous choisissons de modifier est l'amplitude. Cette modification est la plus simple à applquer car elle ne demande pas l'accès au calcul du sinus. Nous écrivons donc la ligne :
+\begin{lstlisting}[style = customc]
+data = (unsigned int)(32767.5 + 65535/20*(s1_alpha*signal_sin[s1_i]));
+\end{lstlisting}
+avec la variable \emph{s1\_alpha} qui est la valeur de l'amplitude et \emph{data} la valeur envoyé sur le CNA.
+
+Pour avoir une influence sur la fréquence du signal généré, nous devons pouvoir modifier la fréquence à laquelle la fonction de génération des signaux est appelé. C'est possible grâce à la fonction RTAI \emph{rt\_task\_make\_periodic} dont nous choisirons le paramètres de \emph{période} en fonction de la valeur récupéré sur le potentiomètre.
+
+De même pour la modification de phase, nous devons jouer avec un paramètre qui n'est pas accessible. Nous proposons de modifier la lecture du tableau pour permettre un décalage de l'émission du signal.
+
+Pour savoir quelle modifications doit être appliqué sur le signal, nous utilisons alors les valeurs binaire \textbf{p}, \textbf{f} et \textbf{a} reçus en début de la fonction \emph{lecture}. Une succession de condition \emph{if} nous permet d'appliquer la modification souhaité. Cet enchainement est ensuite en-capsulé dans une autre condition \emph{if} qui va dépendre du bit \textbf{n}, pour choisir sur que signal les modifications seront appliquées. 
+\subsection{Observation des résultats}
+Nous avons réussi à implémenter la première application sur le signal, la modification de l'amplitude. Les premiers test se sont retrouvé être très concluant et nous souhaitons passer à l'implémentation des autres fonction et modification. Mais le manque de temps et les problèmes RTAI nous ont retardés.
+
+En effet, les premiers programmes que nous avons exécuté ont eu un effet radical sur le RTOS. Le programme prenait totalement la main sur le système d'exploitation en ne laissant aucun espace au système Linux qui tourne en parallèle. A partir de ce moment, il est impossible d'arrêter le programme et de faire autre chose avec l'OS. Pour corriger ce problème, il faut éteindre brutalement le RTOS pour le relancer et vérifier quel sont les problèmes du programme qui font qu'il est non préemptible et pourquoi il utilise toute les ressources du processeur.

@@ -13,7 +13,6 @@
 
 comedi_t *cf;
 
-
 /* array who contain all outputs periodes */
    unsigned int deltat[SIZETAB];
 
